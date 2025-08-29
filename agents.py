@@ -200,7 +200,7 @@ class NegamaxAgent(Agent):
         def switch(player):
             return Player.MIN if player == Player.MAX else Player.MAX
 
-        def negamax(state, depth, player):
+        def negamax(state, player, depth):
             if state.is_goal_state() or depth == 0:  # is_terminal_node(node)
                 # node_evaluation(node) * (-1 if player == Player.MIN else 1)
                 scores = state.get_scores()
@@ -209,18 +209,11 @@ class NegamaxAgent(Agent):
                 evaluation = current_player_score - opponent_scores
                 return evaluation * (-1 if player == Player.MIN else 1)
 
-            if player == Player.MAX:
-                score = -math.inf
-                for action in state.get_legal_actions():  # for succ in node.successors()
-                    successor = state.generate_successor_state(action)
-                    score = max(score, -negamax(successor, depth - 1, switch(player)))
-                return score
-            else:  # player == Player.MIN
-                score = +math.inf
-                for action in state.get_legal_actions():  # for succ in node.successors()
-                    successor = state.generate_successor_state(action)
-                    score = min(score, negamax(successor, depth - 1, Player.MAX))
-                return score  # return val
+            score = -math.inf
+            for action in state.get_legal_actions():  # for succ in node.successors()
+                successor = state.generate_successor_state(action)
+                score = max(score, -negamax(successor, switch(player), depth - 1))
+            return score
 
         actions = state.get_legal_actions()
         if not actions:
@@ -231,7 +224,7 @@ class NegamaxAgent(Agent):
 
         for action in actions:
             successor = state.generate_successor_state(action)
-            score = -negamax(successor, max_depth - 1, Player.MIN)
+            score = -negamax(successor, Player.MIN, max_depth - 1)
 
             if score > best_score:
                 best_score = score
@@ -260,27 +253,16 @@ class NegamaxABAgent(Agent):
                 evaluation = agent_score - opponent_score
                 return evaluation * (-1 if player == Player.MIN else 1)
 
-            if player == Player.MAX:
-                score = -math.inf
-                for action in state.get_legal_actions():  # for succ in node.successors()
-                    successor = state.generate_successor_state(action)
-                    # val = -negamax_alpha_beta(succ, switch(player), -beta, -alpha)
-                    val = -negamax_alpha_beta(successor, switch(player), -beta, -alpha, depth - 1)
-                    score = max(score, val)
-                    alpha = max(alpha, score)
-                    if alpha >= beta:  # break
-                        break
-                return score
-            else:  # player == Player.MIN
-                score = +math.inf
-                for action in state.get_legal_actions():  # for succ in node.successors()
-                    successor = state.generate_successor_state(action)
-                    # score = min(score, minimax(succ, Player.MAX, alpha, beta))
-                    score = min(score, negamax_alpha_beta(successor, Player.MAX, alpha, beta, depth - 1))
-                    beta = min(beta, score)
-                    if alpha >= beta:  # break
-                        break
-                return score
+            score = -math.inf
+            for action in state.get_legal_actions():  # for succ in node.successors()
+                successor = state.generate_successor_state(action)
+                # val = -negamax_alpha_beta(succ, switch(player), -beta, -alpha)
+                val = -negamax_alpha_beta(successor, switch(player), -beta, -alpha, depth - 1)
+                score = max(score, val)
+                alpha = max(alpha, score)
+                if alpha >= beta:  # break
+                    break
+            return score
 
         actions = state.get_legal_actions()
         if not actions:
@@ -311,7 +293,6 @@ class IterativeDeepeningMinimaxAgent(Agent):
             MAX = "MAX"
             MIN = "MIN"
 
-        # Identify which player is on the move
         our_player = state.get_on_move_ord()
 
         def id_minimax(state, player, depth, MAX_DEPTH):
@@ -355,7 +336,6 @@ class IterativeDeepeningMinimaxAgent(Agent):
                     current_best_score = score
                     current_best_action = action
 
-            # Update the best action for the current depth
             best_action = current_best_action
 
         return best_action
