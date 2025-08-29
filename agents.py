@@ -83,7 +83,6 @@ class MinimaxAgent(Agent):
             MAX = "MAX"
             MIN = "MIN"
 
-        # Identify which player is on the move
         our_player = state.get_on_move_ord()
 
         def minimax(state, depth, player):
@@ -134,7 +133,6 @@ class MinimaxABAgent(Agent):
             MAX = "MAX"
             MIN = "MIN"
 
-        # Identify which player is on the move
         our_player = state.get_on_move_ord()
 
         def minimax_alpha_beta(state, depth, player, alpha, beta):
@@ -256,7 +254,6 @@ class NegamaxABAgent(Agent):
             score = -math.inf
             for action in state.get_legal_actions():  # for succ in node.successors()
                 successor = state.generate_successor_state(action)
-                # val = -negamax_alpha_beta(succ, switch(player), -beta, -alpha)
                 val = -negamax_alpha_beta(successor, switch(player), -beta, -alpha, depth - 1)
                 score = max(score, val)
                 alpha = max(alpha, score)
@@ -369,21 +366,18 @@ class NegaScoutAgent(Agent):
                 successor = state.generate_successor_state(action)
 
                 if first_child:  # if succ is node.first_child()
-                    # val = -negascout(succ, switch(player), -beta, -alpha)
                     val = -negascout(successor, switch(player), -beta, -alpha, depth - 1)
                     first_child = False
                 else:
-                    # val = -negascout(succ, switch(player), -alpha - 1, -alpha)
                     val = -negascout(successor, switch(player), -alpha - 1, -alpha, depth - 1)
 
-                    if alpha < val < beta:  # if alpha < val < beta
-                        # val = -negascout(succ, switch(player), -beta, -alpha)
+                    if alpha < val < beta:
                         val = -negascout(successor, switch(player), -beta, -alpha, depth - 1)
 
                 score = max(score, val)
                 alpha = max(alpha, score)
 
-                if alpha >= beta:  # if alpha >= beta: break
+                if alpha >= beta:
                     break
 
             return score
