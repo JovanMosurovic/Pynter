@@ -240,7 +240,7 @@ class NegamaxAgent(Agent):
         return best_action
 
 
-class NegamaxAlphaBetaAgent(Agent):
+class NegamaxABAgent(Agent):
     def get_chosen_action(self, state, max_depth):
         class Player:
             MAX = "MAX"
