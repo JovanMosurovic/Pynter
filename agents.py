@@ -37,6 +37,7 @@ class GreedyAgent(Agent):
 
 class MaxNAgent(Agent):
     def get_chosen_action(self, state, max_depth):
+        time.sleep(0.5)
         def max_n(state, depth, player):
             if state.is_goal_state() or depth == 0:  # is_terminal_node(node)
                 # node_evaluation_list(node)
@@ -79,6 +80,7 @@ class MaxNAgent(Agent):
 
 class MinimaxAgent(Agent):
     def get_chosen_action(self, state, max_depth):
+        time.sleep(0.5)
         class Player:
             MAX = "MAX"
             MIN = "MIN"
@@ -129,6 +131,7 @@ class MinimaxAgent(Agent):
 
 class MinimaxABAgent(Agent):
     def get_chosen_action(self, state, max_depth):
+        time.sleep(0.5)
         class Player:
             MAX = "MAX"
             MIN = "MIN"
@@ -189,6 +192,7 @@ class MinimaxABAgent(Agent):
 
 class NegamaxAgent(Agent):
     def get_chosen_action(self, state, max_depth):
+        time.sleep(0.5)
         class Player:
             MAX = "MAX"
             MIN = "MIN"
@@ -233,6 +237,7 @@ class NegamaxAgent(Agent):
 
 class NegamaxABAgent(Agent):
     def get_chosen_action(self, state, max_depth):
+        time.sleep(0.5)
         class Player:
             MAX = "MAX"
             MIN = "MIN"
@@ -286,6 +291,7 @@ class NegamaxABAgent(Agent):
 
 class IterativeDeepeningMinimaxAgent(Agent):
     def get_chosen_action(self, state, max_depth):
+        time.sleep(0.5)
         class Player:
             MAX = "MAX"
             MIN = "MIN"
@@ -340,6 +346,7 @@ class IterativeDeepeningMinimaxAgent(Agent):
 
 class NegaScoutAgent(Agent):
     def get_chosen_action(self, state, max_depth):
+        time.sleep(0.5)
         class Player:
             MAX = "MAX"
             MIN = "MIN"
